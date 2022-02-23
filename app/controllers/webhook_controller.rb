@@ -2,6 +2,8 @@ class WebhookController < ApplicationController
   require 'line/bot'  # gem 'line-bot-api'
 
   protect_from_forgery except: [:callback] # CSRF対策無効化
+  def index
+  end
 
   def client
     @client ||= Line::Bot::Client.new { |config|
