@@ -3,6 +3,21 @@ class WebhookController < ApplicationController
 
   protect_from_forgery except: [:callback] # CSRF対策無効化
   def index
+    @work_date = Date.today
+    @punch_in = Time.now
+    @record = Record.new
+  end
+
+  def punch_in
+    @record = Record.new
+    @record.work_date = Date.today
+    @record.punch_in = Time.now
+    if @record.save
+      flash[:notice] = "出勤時間を記録しました。"
+      redirect_to("/")
+    else
+      render("/")
+    end
   end
 
   def client
