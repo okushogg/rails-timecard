@@ -56,7 +56,7 @@ class WebhookController < ApplicationController
           #address = event.message['adress']
           message = {
             type: 'text',
-            text: latitude,longitude
+            text: event.message['latitude']
           }
           client.reply_message(event['replyToken'], message)
         end
