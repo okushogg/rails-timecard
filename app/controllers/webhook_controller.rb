@@ -48,7 +48,21 @@ class WebhookController < ApplicationController
           }
           client.reply_message(event['replyToken'], message)
         end
+
+        case event.type
+        when Line::Bot::Event::MessageType::Location
+          latitude = event.message['latitude']
+          longitude = event.message['longitude']
+          #address = event.message['adress']
+          message = {
+            type: 'text',
+            text: latitude,longitude
+          }
+          client.reply_message(event['replyToken'], message)
+        end
+
       end
+
     end
 
     "OK"
