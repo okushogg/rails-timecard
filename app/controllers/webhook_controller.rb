@@ -45,7 +45,7 @@ class WebhookController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
-            text: event.source['userID']
+            text: event['source']['userID']
           }
           client.reply_message(event['replyToken'], message)
         end
