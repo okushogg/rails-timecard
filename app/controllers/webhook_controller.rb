@@ -38,7 +38,6 @@ class WebhookController < ApplicationController
     events = client.parse_events_from(body)
 
     events.each do |event|
-      #response = "event.userID" "event.displayName"
       case event
       when Line::Bot::Event::Message
         case event.type
@@ -52,9 +51,6 @@ class WebhookController < ApplicationController
 
         case event.type
         when Line::Bot::Event::MessageType::Location
-          #latitude = event.message['latitude']
-          #longitude = event.message['longitude']
-          #address = event.message['address']
           message = {
             type: 'text',
             text: event.message['address']
