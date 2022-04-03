@@ -38,14 +38,14 @@ class WebhookController < ApplicationController
     events = client.parse_events_from(body)
 
     events.each do |event|
-      response = "#{event.userID} #{event.displayName}"
+      #response = "event.userID" "event.displayName"
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
-            text: response
+            text: event.userID
           }
           client.reply_message(event['replyToken'], message)
         end
