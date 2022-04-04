@@ -5,14 +5,16 @@ class WebhookController < ApplicationController
   def index
     @work_date = Date.today
     @punch_in = Time.now
-    @record = Record.new
+    @attendance_record = Attendance_record.new
   end
 
   def punch_in
-    @record = Record.new
-    @record.work_date = Date.today
-    @record.punch_in = Time.now
-    if @record.save
+    @attendance_record = Attendance_record.new
+    @attendance_record.user_line_id = event['source']['userId']
+    @attendance_record.work_date = Date.today
+    @attendance_record.start_time = Time.now
+    @attendance_record.start_place = event.message['address']
+    if @attendance_record.save
       flash[:notice] = "出勤時間を記録しました。"
       redirect_to("/")
     else
