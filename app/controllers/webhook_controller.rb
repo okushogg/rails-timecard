@@ -5,6 +5,7 @@ class WebhookController < ApplicationController
   def index
     @work_date = Date.today
     @punch_in = Time.now
+    @attendance_records = AttendanceRecord.all
     @attendance_record = AttendanceRecord.new
   end
 
