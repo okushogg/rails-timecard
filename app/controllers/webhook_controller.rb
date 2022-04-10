@@ -53,7 +53,7 @@ class WebhookController < ApplicationController
     @attendance_record.work_date = Date.today
     # @attendance_record.break_time = 1
     @attendance_record.start_time = Time.now
-    @attendance_record.start_address = event.message['address']
+    @attendance_record.start_address = event['message']['address']
     if @attendance_record.save
       message = {
         type: 'text',
