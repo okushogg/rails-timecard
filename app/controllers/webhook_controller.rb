@@ -128,7 +128,7 @@ class WebhookController < ApplicationController
 
         case event.type
         when Line::Bot::Event::MessageType::Location
-          start_work(event)
+          attendance_record_check(event)
         end
 
       end
