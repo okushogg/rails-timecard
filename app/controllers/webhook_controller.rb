@@ -128,11 +128,7 @@ class WebhookController < ApplicationController
 
         case event.type
         when Line::Bot::Event::MessageType::Location
-          message = {
-            type: 'text',
-            text: event['message']['address']
-          }
-          client.reply_message(event['replyToken'], message)
+          start_work
         end
 
       end
