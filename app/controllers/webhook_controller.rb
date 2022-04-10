@@ -91,9 +91,9 @@ class WebhookController < ApplicationController
   def attendance_record_check
     @attendance_record = AttendanceRecord.last
     if @attendance_record.finish_time == nil && @attendance_record =! nil
-      start_work
-    else
       finish_work
+    else
+      start_work
     end
   end
 
