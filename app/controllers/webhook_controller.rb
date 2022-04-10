@@ -38,13 +38,22 @@ class WebhookController < ApplicationController
     end
   end
 
+  def check_record
+    @attendance_record = AttendanceRecord.last
+    if @attendance_record.finish_time == nil && @attendance_record =! nil
+      punch_out
+    else
+      punch_in
+    end
+  end
+
   def start_work
     @attendance_record = AttendanceRecord.new
     @attendance_record.user_line_id = event['source']['userId']
     @attendance_record.work_date = Date.today
     @attendance_record.break_time = 1
     @attendance_record.start_time = Time.now
-    @attendance_record.start_place = event.message['address']
+    @attendance_record.start_address = event.message['address']
     if @attendance_record.save
       message = {
         type: 'text',
@@ -60,10 +69,33 @@ class WebhookController < ApplicationController
     end
   end
 
-  # def attendance_record_check
-  #   if AttendanceRecord.last != nil && AttendanceRecord.last.finish_time == nil
-  #     punsh_in
-  # end
+  def finish_work
+    @attendance_record = AttendanceRecord.last
+    @attendance_record.finish_time = Time.now
+    @attendance_record.finish_address = event.message['address']
+    if @attendance_record.save
+      message = {
+        type: 'text',
+        text: '退勤情報を記録しました。'
+      }
+      client.reply_message(event['replyToken'], message)
+    else
+      message = {
+        type: 'text',
+        text: '退勤情報の記録に失敗しました。'
+      }
+      client.reply_message(event['replyToken'], message)
+    end
+  end
+
+  def attendance_record_check
+    @attendance_record = AttendanceRecord.last
+    if @attendance_record.finish_time == nil && @attendance_record =! nil
+      start_work
+    else
+      finish_work
+    end
+  end
 
   def client
     @client ||= Line::Bot::Client.new { |config|
@@ -96,11 +128,7 @@ class WebhookController < ApplicationController
 
         case event.type
         when Line::Bot::Event::MessageType::Location
-          message = {
-            type: 'text',
-            text: event.message['address']
-          }
-          client.reply_message(event['replyToken'], message)
+          attendance_record_check
         end
 
       end

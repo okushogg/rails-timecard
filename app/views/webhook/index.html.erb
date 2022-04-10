@@ -2,20 +2,21 @@
 <ul><%= @punch_in %></ul>
 
 <%= link_to("出勤", "/punch_in", {method: "post"}) %> <br>
-<%= link_to("退勤", "/punch_out", {method: "post"}) %>
+<%= link_to("退勤", "/punch_out", {method: "post"}) %><br>
+<%= link_to("出退勤管理", "/check_record", {method: "post"}) %>
 
-<% @attendance_records.each do |record| %>
-  <table border="1">
-    <tr>
-      <th>LINE-ID</th> <th>日付</th><th>出勤時間</th> <th>出勤場所</th><th>退勤時間</th><th>退勤場所</th>
-    </tr>
+<table border="1">
+  <tr>
+    <th>LINE-ID</th> <th>日付</th><th>出勤時間</th> <th>出勤場所</th><th>退勤時間</th><th>退勤場所</th>
+  </tr>
+  <% @attendance_records.each do |record| %>
     <tr>
       <td><%= record.user_line_id %></td>
       <td><%= record.work_date %></td>
-      <td><%= record.start_time %></td>
+      <td><%= record.start_time.strftime('%H:%M') %></td>
       <td><%= record.start_address %></td>
-      <td><%= record.finish_time %></td>
+      <td><%= record.finish_time.strftime('%H:%M') %></td>
       <td><%= record.finish_address %></td>
     </tr>
-  </table>
-<% end %>
+  <% end %>
+</table>

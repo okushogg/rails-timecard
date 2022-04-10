@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   get '/' => 'webhook#index'
   post '/punch_in' => 'webhook#punch_in'
   post '/punch_out' => 'webhook#punch_out'
+  post '/check_record' => 'webhook#check_record'
   post '/callback' => 'webhook#callback'
 end
