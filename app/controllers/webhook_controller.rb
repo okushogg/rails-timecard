@@ -51,7 +51,7 @@ class WebhookController < ApplicationController
     @attendance_record = AttendanceRecord.new
     @attendance_record.user_line_id = event['source']['userId']
     @attendance_record.work_date = Date.today
-    @attendance_record.break_time = 1
+    # @attendance_record.break_time = 1
     @attendance_record.start_time = Time.now
     @attendance_record.start_address = event.message['address']
     if @attendance_record.save
@@ -128,7 +128,11 @@ class WebhookController < ApplicationController
 
         case event.type
         when Line::Bot::Event::MessageType::Location
-          attendance_record_check
+          message = {
+            type: 'text',
+            text: event['source']['userId']
+          }
+          client.reply_message(event['replyToken'], message)
         end
 
       end
