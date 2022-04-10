@@ -47,7 +47,7 @@ class WebhookController < ApplicationController
     end
   end
 
-  def start_work
+  def start_work(event)
     @attendance_record = AttendanceRecord.new
     @attendance_record.user_line_id = event['source']['userId']
     @attendance_record.work_date = Date.today
@@ -69,7 +69,7 @@ class WebhookController < ApplicationController
     end
   end
 
-  def finish_work
+  def finish_work(event)
     @attendance_record = AttendanceRecord.last
     @attendance_record.finish_time = Time.now
     @attendance_record.finish_address = event.message['address']
@@ -88,12 +88,12 @@ class WebhookController < ApplicationController
     end
   end
 
-  def attendance_record_check
+  def attendance_record_check(event)
     @attendance_record = AttendanceRecord.last
     if @attendance_record.finish_time == nil && @attendance_record =! nil
-      finish_work
+      finish_work(event)
     else
-      start_work
+      start_work(event)
     end
   end
 
@@ -128,7 +128,7 @@ class WebhookController < ApplicationController
 
         case event.type
         when Line::Bot::Event::MessageType::Location
-          start_work
+          start_work(event)
         end
 
       end
