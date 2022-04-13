@@ -13,10 +13,15 @@
     <tr>
       <td><%= record.user_line_id %></td>
       <td><%= record.work_date %></td>
-      <td><%= record.start_time %></td>
+      <td><%= record.start_time.strftime('%H:%M') %></td>
       <td><%= record.start_address %></td>
-      <td><%= record.finish_time %></td>
-      <td><%= record.finish_address %></td>
+      <% if record.finish_time.blank? %>
+        <td></td>
+        <td></td>
+      <% else %>
+        <td><%= record.finish_time.strftime('%H:%M') %></td>
+        <td><%= record.finish_address %></td>
+      <% end %>
     </tr>
   <% end %>
 </table>
